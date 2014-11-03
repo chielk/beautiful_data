@@ -46,9 +46,10 @@ In these graphs the year will be on the x-axis, because that seems intuitive as 
 is often placed on the x-axis. On the y-axis we will show the horsepower, so
 higher means more horsepower.
 Together these two properties will determine the position of a data point.
-Since there only three points of origin we can divide the y axis of the graph
-in three of the same graphs with the different data for each point of origin. In
-this way the x-axis (time) is shared for all cars independent of their origin.
+Since there are only three points of origin (i.e. Europe, Japan, US) we can
+divide the y axis of the graph in three of the same graphs with the different
+data for each point of origin. In this way the x-axis (time) is shared for all
+cars independent of their origin.
 
 The data point will be represented by a polygon in which the amount of
 vertices/corners indicates the amount of cylinders (i.e. triangle = 3 cylinders,
@@ -69,14 +70,14 @@ should be swapped.
 
 Since there are many model names they might not all fit. An interactive version
 of the graph would solve this problem. In this case the model name should be
-displayed if the users hovers over the data entry. An non-interactive
-alternative would a look up table: supply the graph with a look up table and
+displayed if the users hovers over the data entry. A non-interactive
+alternative would be a look up table: supply the graph with a look up table and
 print the row number of the model name next to each polygon.
 
 \section{Visualization}
 In figure \ref{fig:vis} is our visualization. We used Python with Matplotlib to
-create this visualization. Unfortunately there was no room to write the model in
-the graph.
+create this visualization. Unfortunately there was no room to write the model
+in the graph.
 
 \begin{figure}[h!]
 \includegraphics[width=\textwidth]{autovis}
@@ -85,12 +86,15 @@ the graph.
 \end{figure}
 
 We feel that this visualization is effective as it quickly shows certain trends
-in the development of the cars over time (overall, cars became less heavy and more
-efficient)
-and the difference of cars from different regions (American cars are in general
-heavier and less efficient but have more horsepower). This visualization does
-not work well for comparing different car models. However, we feel that his is
-not a big problem because a look up table is inherently better for such a purpose.
+in the development of the cars over time (overall, cars became less heavy and
+more efficient, especially during the energy crises) and the difference between
+cars from different regions (American cars are in general heavier and less
+efficient but have more horsepower). This visualization does not work well for
+comparing different car models. However, we feel that his is not a big problem
+because a look up table is inherently better for such a purpose, and since the
+cars are all at least 30 years old, one would presumably be more interested in
+viewing the trends in a historic context, to which the model names are not very
+relevant.
 
 
 \end{document}
