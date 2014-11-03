@@ -98,11 +98,50 @@ if __name__ == "__main__":
     sorted_points = sort_by(data_points, i("year"))
     by_origin = split_by(sorted_points, i("origin"))
 
+    multiple_graphs = True
+
+
     window = 1
     for origin, points in by_origin.iteritems():
-        plt.subplot(3, 1, window)
-        plt.title(origin)
-        plt.axis([1969.5, 1982.5, 35, 240])
+        if multiple_graphs:
+            plt.subplot(3, 1, window)
+            plt.title(origin)
+        plt.axis([1962, 1983, 35, 240])
+
+        if window == 2:
+            plt.plot([0], [0], "s",
+                    color=".5",
+                    markersize=16,
+                    label="5000 lbs")
+            plt.plot([0], [0], "s",
+                    color=".5",
+                    markersize=4,
+                    label="1600 lbs")
+            plt.plot([0], [0], "s",
+                    color="0",
+                    label="9 Mile/Gallon")
+            plt.plot([0], [0], "s",
+                    color="1",
+                    label="50 Mile/Gallon")
+        elif window == 1:
+            plt.plot([0], [0], "^",
+                    color="0.5",
+                    label="Three cylinders")
+            plt.plot([0], [0], "s",
+                    color="0.5",
+                    label="Four cylinders")
+            plt.plot([0], [0], "p",
+                    color="0.5",
+                    label="Five cylinders")
+            plt.plot([0], [0], "h",
+                    color="0.5",
+                    label="Six cylinders")
+            plt.plot([0], [0], "8",
+                    color="0.5",
+                    label="Eight cylinders")
+        legend = plt.legend(loc="upper left", numpoints=1, frameon=False)
+
+        plt.ylabel("Horsepower")
 
         window += 1
         for point in points:
@@ -113,9 +152,8 @@ if __name__ == "__main__":
             mipg = point[i("mpg")]
             plt.plot([year], [hors],
                     s(cyli),
-                    color=str((mipg-9)/(37.6)),
+                    color=str((mipg-9)/41),
                     markersize=wght/400)
-
 
     plt.xlabel("Year")
     plt.show()
