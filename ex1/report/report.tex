@@ -52,7 +52,7 @@ data for each point of origin. In this way the x-axis (time) is shared for all
 cars independent of their origin.
 
 The data point will be represented by a polygon in which the amount of
-vertices/corners indicates the amount of cylinders (i.e. triangle = 3 cylinders,
+vertices/corners indicates the amount of cylinders (e.g. triangle = 3 cylinders,
 square = 4 cylinders), in this way we lose no information. The size of the
 polygon indicates the weight of the car.
 Next to the data point we can print the model name.
@@ -95,6 +95,13 @@ because a look up table is inherently better for such a purpose, and since the
 cars are all at least 30 years old, one would presumably be more interested in
 viewing the trends in a historic context, to which the model names are not very
 relevant.
+
+Finally, we could extract the model family (e.g. Ford or Audi) from the model,
+and change the texture of the polygon accordingly. Perhaps, more patterns can
+be discovered with this additional information (for example, one brand of cars is
+always efficient). However, we suspect that the polygons are too small for the
+user to distinguish this information and that an interactive version would be
+required so that a user can highlight a model family for enhanced accuracy.
 
 
 \end{document}
