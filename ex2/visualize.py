@@ -2,7 +2,7 @@ import sys
 import argparse
 from vtk import (vtkImageReader2, vtkRenderer, vtkRenderWindowInteractor,
         vtkRenderWindow, vtkRenderWindowInteractor, vtkContourFilter,
-        vtkPolyDataMapper, vtkLODActor)
+        vtkPolyDataMapper, vtkLODActor, vtkSmoothPolyDataFilter)
 
 
 def get_image_data():
@@ -21,7 +21,8 @@ question = 7  # 5 or 6 or 7
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('range', metavar='range', type=float, nargs='+')
+    parser.add_argument('--contour', metavar='contour', type=float, nargs='+')
+    parser.add_argument('-r', '--range', metavar='range', type=str)
     args = parser.parse_args()
 
     # read data
@@ -38,22 +39,29 @@ if __name__ == '__main__':
     if question == 5:
         contour_filter.ComputeScalarsOff()
 
-    if len(args.range) == 0:
+    if len(args.contour) == 0:
         contour_filter.SetValue(min, (min + max) / 2)
     else:
-        for i, val in enumerate(args.range):
+        for i, val in enumerate(args.contour):
             assert(val > 0)
             assert(val <= 1)
             contour_filter.SetValue(i, int(val * max))
 
+    smoother = vtkSmoothPolyDataFilter()
+    smoother.SetRelaxationFactor(.5)
+    smoother.GetSource(contour_filter.GetOutput())
+
     # PolyMapper
     mapper = vtkPolyDataMapper()
-    mapper.SetInput(contour_filter.GetOutput())
+    mapper.SetInput(smoother.GetOutput())
 
     if question == 6:
         mapper.ScalarVisibilityOff()
-    elif question == 7:
-        mapper.SetScalarRange(min, max)
+    if args.range:
+        vals = args.range.split(',')
+        range_min = int(float(vals[0]) * max)
+        range_max = int(float(vals[1]) * max)
+        mapper.SetScalarRange(range_min, range_max)
 
     # Actor
     actor = vtkLODActor()
