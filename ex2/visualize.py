@@ -39,7 +39,7 @@ if __name__ == '__main__':
     if question == 5:
         contour_filter.ComputeScalarsOff()
 
-    if len(args.contour) == 0:
+    if not args.contour:
         contour_filter.SetValue(min, (min + max) / 2)
     else:
         for i, val in enumerate(args.contour):
@@ -47,13 +47,9 @@ if __name__ == '__main__':
             assert(val <= 1)
             contour_filter.SetValue(i, int(val * max))
 
-    smoother = vtkSmoothPolyDataFilter()
-    smoother.SetRelaxationFactor(.5)
-    smoother.GetSource(contour_filter.GetOutput())
-
     # PolyMapper
     mapper = vtkPolyDataMapper()
-    mapper.SetInput(smoother.GetOutput())
+    mapper.SetInput(contour_filter.GetOutput())
 
     if question == 6:
         mapper.ScalarVisibilityOff()
