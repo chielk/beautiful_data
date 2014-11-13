@@ -66,8 +66,8 @@ if __name__ == '__main__':
     actor.GetProperty().SetColor(1, 1, 1)  # colors.green_to_white(0, 255))
     actor.GetProperty().SetOpacity(0.3)  # colors.default_opacity(0, 255, 0.5))
 
-    # question 6
-    actor.GetProperty().SetColor(.8, .8, .8)
+    if question == 6:
+        actor.GetProperty().SetColor(.8, .8, .8)
 
     # Set up renderer, render window and interactor
     renderer = vtk.vtkRenderer()
