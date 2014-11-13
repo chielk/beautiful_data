@@ -1,12 +1,11 @@
 import sys
 import argparse
-from vtk import (vtkImageReader2, vtkRenderer, vtkRenderWindowInteractor,
-        vtkRenderWindow, vtkRenderWindowInteractor, vtkMarchingCubes,
-        vtkPolyDataMapper, vtkOpenGLActor, vtkSmoothPolyDataFilter)
+import vtk
+# Yo dawg, I heard you like namespaces
 
 
 def get_image_data():
-    reader = vtkImageReader2()
+    reader = vtk.vtkImageReader2()
     reader.SetDataScalarTypeToUnsignedShort()
     reader.SetFileDimensionality(2)
     reader.SetFilePrefix("data/slice")
@@ -34,14 +33,14 @@ if __name__ == '__main__':
     max = image_data.GetScalarTypeMax()
 
     # Filter the contour
-    contour_filter = vtkMarchingCubes()
+    contour_filter = vtk.vtkMarchingCubes()
     contour_filter.SetInput(image_data)
 
     if question == 5:
         contour_filter.ComputeScalarsOff()
 
     if not args.contour:
-        contour_filter.SetValue(min, (min + max) / 2)
+        contour_filter.SetValue(0, (min + max) / 2)
     else:
         for i, val in enumerate(args.contour):
             assert(val > 0)
@@ -49,7 +48,7 @@ if __name__ == '__main__':
             contour_filter.SetValue(i, int(val * max))
 
     # PolyMapper
-    mapper = vtkPolyDataMapper()
+    mapper = vtk.vtkPolyDataMapper()
     mapper.SetInput(contour_filter.GetOutput())
 
     if question == 6:
@@ -60,20 +59,23 @@ if __name__ == '__main__':
         range_max = int(float(vals[1]) * max)
         mapper.SetScalarRange(range_min, range_max)
 
+    volume_property2 = vtk.vtkVolumeProperty()
     # Actor
-    actor = vtkOpenGLActor()
+    actor = vtk.vtkOpenGLActor()
     actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(1, 1, 1)  # colors.green_to_white(0, 255))
+    actor.GetProperty().SetOpacity(0.3)  # colors.default_opacity(0, 255, 0.5))
 
     # question 6
     actor.GetProperty().SetColor(.8, .8, .8)
 
     # Set up renderer, render window and interactor
-    renderer = vtkRenderer()
+    renderer = vtk.vtkRenderer()
     renderer.SetBackground(0.329412, 0.34902, 0.427451)
     renderer.AddActor(actor)
-    window = vtkRenderWindow()
+    window = vtk.vtkRenderWindow()
     window.AddRenderer(renderer)
-    interactor = vtkRenderWindowInteractor()
+    interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)
 
     interactor.Initialize()
