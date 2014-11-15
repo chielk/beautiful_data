@@ -107,9 +107,9 @@ kunnen het van mij part ook laten}
 
     \item \textit{Tell the contour filter stage to not compute scalar values and
 then set a colour in the actor, or}
-    \item \textit{6. Tell the mapper stage to ignore scalar values and then set
+    \item \textit{Tell the mapper stage to ignore scalar values and then set
 a colour in the actor, or}
-    \item \textit{7. Tell the mapper what the actual scalar range is. In this
+    \item \textit{Tell the mapper what the actual scalar range is. In this
 case the mapper will use a different colour from the red – blue lookup table
 depending on the contour value you used.}
 
@@ -134,13 +134,13 @@ chiel?}
     \item \textit{Modify your software in order to create a better camera angle
 on your visualization.}
 
-\textbf{todo}
+\textbf{todo, geprobeert op regel 60 in prog.py}
 
     \item \textit{With this new camera angle, it becomes harder to determine the
 orientation of the visualization. Add an outline to your visualization that
 shows a bounding box to represent the extent of the input data.}
 
-\textbf{todo}
+We have created this using the \emph{vtkOutlineFilter} class.
 
     \item \textit{Modify your software so that you can visually explore all
 contour values in the dataset. You could either use a simple loop to do this, or
