@@ -5,6 +5,8 @@ import vtk
 
 
 def get_image_data():
+    """ Reads the image data using the class vtkImageReader2. Returns
+    the result of the GetOutput() function call."""
     reader = vtk.vtkImageReader2()
     reader.SetDataScalarTypeToUnsignedShort()
     reader.SetFileDimensionality(2)
@@ -21,9 +23,9 @@ if __name__ == '__main__':
     min_value = data.GetScalarTypeMin()
     max_value = data.GetScalarTypeMax()
 
-    settings = [ ( (200, 250), (0.7, 0, 0), 0.1),       # skin/hair
-                 ( (1900, 2100), (0, 0.7, 0), 0.2),     # skeleton
-                 ( (3090, 3100), (0, 0, 0.7), 0.4)      # jaw, teeth and coin?
+    settings = [ ( (200, 250), (0.7, 0, 0), 0.1),        # skin/hair
+                 #( (1800, 2500), (0, 0.7, 0), 0.1),      # skeleton
+                 #( (3090, 30000), (0, 0, 0.7), 0.1)      # jaw, teeth and coin?
                 ]
 
     actors = []
@@ -52,7 +54,13 @@ if __name__ == '__main__':
 
     # here we do all rendering (has basically nothing to do with the visualization)
     renderer = vtk.vtkRenderer()
-    renderer.SetBackground(0.329412, 0.34902, 0.427451)
+    renderer.SetBackground(0.33, 0.35, 0.43)
+
+    # TODO: I try to set the camera here. but oh vtk :(
+    #renderer.GetActiveCamera().SetPosition(0, 0, 0)
+    print renderer.GetActiveCamera().GetEyeAngle()
+    #renderer.GetActiveCamera().Elevation(-0.1)
+    renderer.UpdateCamera()
 
     # do not forget to add the actors here:
     for actor in actors:

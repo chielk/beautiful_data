@@ -9,5 +9,7 @@ hist, bins = np.histogram(a, bins=65536)
 hist[0] = 0
 
 plt.bar(range(2500), hist[:2500], align='center')
-plt.show()
-#print hist
+plt.xlabel('Values')
+plt.ylabel('Count')
+#plt.show()
+plt.savefig('hist.png')

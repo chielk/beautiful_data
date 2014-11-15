@@ -1,0 +1,166 @@
+\documentclass{article}[10pt]
+
+%\usepackage{fullpage}
+
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption} \usepackage{hyperref}
+
+
+\title{Scientific Visualization and Virtual Reality – Exercise 2}
+\author{Maarten Inja (5872464) \& Chiel Kooijman (5743028)}
+
+\begin{document}
+\maketitle
+
+We have been given 94 date files with unknown content. After inspection we have
+found out that it contains 512*512 unsigned short values. We found that these
+could be read with an \emph{vtkImageReader2}. After a couple of days
+messing around with the data to no avail, we also found out that the data type
+was not big endian.
+
+Having successfully read the data we could use
+the \emph{vtkMarchingCubes} class and its method \emph{GenerateValues}
+to separate the data on its values. In order to choose the values wisely we
+first inspected the data and plotted the occurrences of values in a histogram.
+The lower end of the histogram can be seen in figure \ref{fig:histLow}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm]{hist}
+\caption{Histogram of the values in the data files}
+\label{fig:histLow}
+\end{figure}
+
+Based on these distributions of values we have chosen three ranges which we
+identify as a) the skin and hair, b) the skeleton head and spine, and c) the
+lower jaw, teeth and a strange object in the forehead.
+
+\begin{figure}[h]
+        \centering
+        \begin{subfigure}[b]{0.3\textwidth}
+                \includegraphics[width=\textwidth]{red}
+                \caption{The skin and hair}
+                \label{fig:red}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.3\textwidth}
+                \includegraphics[width=\textwidth]{green}
+                \caption{The spine and head}
+                \label{fig:green}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.3\textwidth}
+                \includegraphics[width=\textwidth]{blue}
+                \caption{The jaw and a strange object}
+                \label{fig:blue}
+        \end{subfigure}
+        \caption{The tree ranges}\label{fig:animals}
+\end{figure}
+
+These are plotted together in figure \ref{fig:rgb}, each layer is somewhat
+opaque in order to show all three of them.
+
+\begin{figure}[h]
+\centering
+    \includegraphics[width=10cm]{rgb}
+    \caption{The three layers}
+    \label{fig:rgb}
+\end{figure}
+
+We suspect that the cause of that is the strange object in the persons forehead.
+
+Our code can be downloaded from \url{https://github.com/chielk/beautiful_data}.
+
+\section{Questions and Answers}
+\begin{enumerate}
+    \item \textit{Identify the correct VTK class capable of reading in a
+collection of binary images. There are several that can do this, but some have
+features that make it more suitable than others - see the VTK documentation for
+more details}
+
+This is the \emph{vtkImageReader2} class.
+
+    \item \textit{Configure this source stage by invoking the methods of this
+class that tell it the specifications of the input data:}
+
+See the source code, specifically the function \emph{get\_image\_data}.
+
+    \item \textit{Force the source stage to read the dataset by calling its
+“Update()” method. Now figure out a way to ask the output of the source stage
+for the range of scalar values in the dataset.}
+
+We can do this by calling the methods \emph{GetScalarTypeMin} and
+\textit{GetScalarTypeMax} on the instance returned by
+vtkImageReader2.GetOutput().
+
+    \item \textit{Add VTK classes to create a visualization pipeline that
+renders an isosurface contour of the dataset. Make sure you add an interactor so
+that you can interact with the resulting visualization. For the initial contour
+value, use a value that is halfway the scalar value range.  Or even better;
+allow this value to be passed from the commandline so that you can pass a
+different value each time you run your program.}
+
+You can run \emph{prog.py}. We have found that halfway the scalar value range is
+a terrible decision. The range for the values are now hardcodded.
+\textbf{Chiel, kan jij command line arguments toevoegen aan prog.py? ofzo? we
+kunnen het van mij part ook laten}
+
+    \item \textit{Tell the contour filter stage to not compute scalar values and
+then set a colour in the actor, or}
+    \item \textit{6. Tell the mapper stage to ignore scalar values and then set
+a colour in the actor, or}
+    \item \textit{7. Tell the mapper what the actual scalar range is. In this
+case the mapper will use a different colour from the red – blue lookup table
+depending on the contour value you used.}
+
+We use a different actor for each filtered contour. We set the color and opacity
+values for each actor separately.
+
+    \item \textit{Change the background colour. It is also possible to change
+the background to a gradient. It’s your choice. Just make sure it does not
+interfere with the colours in your visualization. While you are at it: increase
+the size of the render window as well.}
+
+We set the background color using the function \emph{SetBackground} of the
+\emph{vtkRenderer} class. We set the window size using the method \emph{SetSize}
+of the \emph{vtkRenderWindow} class.
+
+    \item \textit{Experiment with the values for the data spacing and report on
+the numbers that you think look appropriate.}
+
+We have set the data spacing to 1x1x2. \textbf{had je dit express gedaan,
+chiel?}
+
+    \item \textit{Modify your software in order to create a better camera angle
+on your visualization.}
+
+\textbf{todo}
+
+    \item \textit{With this new camera angle, it becomes harder to determine the
+orientation of the visualization. Add an outline to your visualization that
+shows a bounding box to represent the extent of the input data.}
+
+\textbf{todo}
+
+    \item \textit{Modify your software so that you can visually explore all
+contour values in the dataset. You could either use a simple loop to do this, or
+if you feel adventurous: add a user interface that supports a slider to set the
+contour value interactively. Whatever you use; scan through the visualizations
+to detect any anomalies in the data.}
+
+\textbf{todo}
+
+    \item \textit{Finally; use the insights obtained from the previous step to
+generate one final image that clearly shows the anomaly/lies you found. Make
+sure the normal anatomy is also visible so that the anomaly/lies can be seen in
+the right context. In your report, describe your approach and your findings.}
+
+See figure \ref{fig:rgb}.
+
+\end{enumerate}
+
+
+
+
+
+\end{document}
