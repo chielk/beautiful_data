@@ -11,7 +11,8 @@ def get_image_data():
     reader.SetFilePrefix("data/slice")
     reader.SetDataExtent(0, 255, 0, 255, 1, 94)
     reader.SetDataSpacing(1, 1, 2)
-    reader.SetDataByteOrderToBigEndian()
+    #reader.SetDataByteOrderToBigEndian()
+    reader.SetNumberOfScalarComponents( 1 )
     reader.UpdateWholeExtent()
     return reader.GetOutput()
 
@@ -20,19 +21,37 @@ if __name__ == '__main__':
     min_value = data.GetScalarTypeMin()
     max_value = data.GetScalarTypeMax()
 
-    settings = [ ( (max_value * 0.8, max_value * 0.9), (0.7, 0, 0), 0.2),
-                 ( (max_value * 0.9, max_value), (0, 0.7, 0), 0.4) ]
+    settings = [ ( (190.0, 200.0), (0.7, 0, 0), 0.1),
+                 ( (200, 250), (0, 0.7, 0.7), 0.1),
+                 ( (1900, 2100), (0, 0.7, 0), 0.1),
+                 ( (2900, 3100), (0, 0, 0.7), 0.1)]
+                 #( (max_value * 0.9, max_value), (0, 0.7, 0), 0.4)]
+                 #( (max_value * 0.83, max_value * 0.9), (0, 0, 0.7), 0.4)]
+
+    settings2 = [ ( 700, (0.7, 0, 0), 0.2),
+                 ( 2000, (0, 0.7, 0), 0.4)]
+                 #( (max_value * 0.9, max_value), (0, 0.7, 0), 0.4)]
+                 #( (max_value * 0.83, max_value * 0.9), (0, 0, 0.7), 0.4)]
 
     actors = []
 
+    i = 0
     for min_max, color, opacity in settings:
+
+
+        print 'min max', min_max
+        print 'color', color
+        print 'opacity', opacity
 
         # contour
         data_contour = vtk.vtkMarchingCubes()
         #data_contour.SetInputConnection(data.GetOutputPort())
         data_contour.SetInput(data)
         data_contour.ComputeNormalsOn()
-        data_contour.GenerateValues(1, min_max)
+        data_contour.GenerateValues(5, min_max[0], min_max[1])
+        #data_contour.SetValue(i, min_max)
+        i += 1
+        data_contour.Update()
 
         # geometry
         data_geometry = vtk.vtkPolyDataMapper()
