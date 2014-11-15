@@ -11,17 +11,16 @@ def get_image_data():
     reader.SetFilePrefix("data/slice")
     reader.SetDataExtent(0, 255, 0, 255, 1, 94)
     reader.SetDataSpacing(1, 1, 2)
-    reader.SetDataByteOrderToBigEndian()
     reader.UpdateWholeExtent()
     return reader.GetOutput()
 
 
-question = 7  # 5 or 6 or 7
+question = 6  # 5 or 6 or 7
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('-c', '--contour', metavar='contour', type=float,
-                        default=[.65], nargs='+')
+                        nargs='+')
     parser.add_argument('-r', '--range', metavar='range', type=str)
     args = parser.parse_args()
 
@@ -33,8 +32,10 @@ if __name__ == '__main__':
     max = image_data.GetScalarTypeMax()
 
     # Filter the contour
+    #contour_filter = vtk.vtkContourFilter()
     contour_filter = vtk.vtkMarchingCubes()
     contour_filter.SetInput(image_data)
+    #contour_filter.ComputeNormalsOn()
 
     if question == 5:
         contour_filter.ComputeScalarsOff()
@@ -44,30 +45,29 @@ if __name__ == '__main__':
     else:
         for i, val in enumerate(args.contour):
             assert(val > 0)
-            assert(val <= 1)
-            contour_filter.SetValue(i, int(val * max))
+            contour_filter.SetValue(i, val)
 
     # PolyMapper
     mapper = vtk.vtkPolyDataMapper()
-    mapper.SetInput(contour_filter.GetOutput())
+    mapper.SetInputConnection(contour_filter.GetOutputPort())
 
     if question == 6:
         mapper.ScalarVisibilityOff()
     if args.range:
         vals = args.range.split(',')
-        range_min = int(float(vals[0]) * max)
-        range_max = int(float(vals[1]) * max)
+        range_min = float(vals[0])
+        range_max = float(vals[1])
         mapper.SetScalarRange(range_min, range_max)
 
     volume_property2 = vtk.vtkVolumeProperty()
     # Actor
     actor = vtk.vtkOpenGLActor()
+    actor.GetProperty().SetRepresentationToSurface()
     actor.SetMapper(mapper)
-    actor.GetProperty().SetColor(1, 1, 1)  # colors.green_to_white(0, 255))
-    actor.GetProperty().SetOpacity(0.3)  # colors.default_opacity(0, 255, 0.5))
 
     if question == 6:
-        actor.GetProperty().SetColor(.8, .8, .8)
+        actor.GetProperty().SetColor(1, 1, 1)
+        actor.GetProperty().SetOpacity(0.3)
 
     # Set up renderer, render window and interactor
     renderer = vtk.vtkRenderer()
