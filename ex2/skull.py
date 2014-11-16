@@ -66,11 +66,9 @@ if __name__ == '__main__':
     renderer = vtk.vtkRenderer()
     renderer.SetBackground(0.33, 0.35, 0.43)
 
-    # TODO: I try to set the camera here. but oh vtk :(
-    #renderer.GetActiveCamera().SetPosition(0, 0, 0)
-    #print renderer.GetActiveCamera().GetEyeAngle()
-    #renderer.GetActiveCamera().Elevation(-0.1)
-    #renderer.UpdateCamera()
+    camera = vtk.vtkCamera()
+    camera.SetPosition(0, 800, 500);
+    renderer.SetActiveCamera(camera)
 
     # do not forget to add the actors here:
     for actor in actors:
@@ -78,7 +76,7 @@ if __name__ == '__main__':
     renderer.AddActor(outline_actor)
 
     window = vtk.vtkRenderWindow()
-    window.SetSize(500, 500)
+    window.SetSize(1000, 500)
     window.AddRenderer(renderer)
     interactor = vtk.vtkRenderWindowInteractor()
     interactor.SetRenderWindow(window)
