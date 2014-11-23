@@ -67,6 +67,7 @@ Mostly interactive
 
 ### 3. challenges in medical visualization
 
+    INCREASE DIMENSIONALITY
 ## 3.1 advances in data acquisition
 320 slice CT scanner (320 slices per second!) can capture the heart beating
 
@@ -83,6 +84,7 @@ microscopy volume dataset on the hippocampus)
 
 advances are continues and demands are accelerating
 
+    POSSIBILITY
 ## 3.2 heterogeneous display and computing devices
 mobile phones
 * familiar
@@ -90,13 +92,14 @@ mobile phones
 * avalaible at bedside
 
 ## 3.3 interactive image segmentation
-image segmentation is very importatnt but impractical because differing image
+image segmentation is very important but impractical because differing image
 acquisition pathology and anatomy. User interaction required
 
-Well known interactive segmentation technique: live-wire or intelligent sciccors
+Well known interactive segmentation technique: live-wire or intelligent scissors
 
 often combines with elements of image analysis
 
+    OTHER PROBLEM
 ## 3.4 topological methods
 topological data representation can be used to segment bones and organs to
 identify their spatial relationships consistently
@@ -110,6 +113,7 @@ dimensional data sets. Potential useful for
 * multi-subject data in group fMRI studies
 * timy-varying data measured by high speed CTs
 
+    SIMULATION
 ## 3.5 integration of simulation models
 simulation to predict outcome
 * interactive skeleton range motion
@@ -121,6 +125,7 @@ problems:
 * dynamical and complex simulation data requires new visualization techniques
 * uncertainty (of simulation) should be explored
 
+    OTHER SOLUTION
 ## 3.6 mappings and reformations
 standardized mapping of higher dimension to lower dimension:
 * greatly facilitates interpretation of data
@@ -130,8 +135,10 @@ standardized mapping of higher dimension to lower dimension:
 * brain flatting
 * colon unfolding
 
+
+    PERFORMANCE SOLVES
 ## 3.7 illustrative visalization in medicine
-no longer perfomance constraints
+no longer performance constraints
 
 Recent examples
 * simulation of crepuscular rays of tumor accessibility planning
@@ -145,6 +152,7 @@ example:
 illustrative technique) to convey simulation flow and the anatomy
 simultaneously)
 
+    PERFORMANCE SOLVES
 ## 3.8 hyper-realism
 also no longer perfomance issues
 interactive physical-based lightning rendering
@@ -158,6 +166,7 @@ indications that this is possible, should be explored)
 ## 3.9 visual analysis in healthcare
 repeat of various previous chapters?
 
+    INCREASE DIMENSIONALITY
 ## 3.10 population imaging
 thousands of patients scanned often for years
 
@@ -185,4 +194,16 @@ data are used
 
 
 
-
+increase dimensionality, problems:
+    * 3.1 advances in data acquisition
+    * 3.10 population imaging
+performance solves all
+    * 3.7 illustrative visualization (simulation)
+    * 3.8 hyper-realism
+now possible
+    * 3.2 heterogeneous display and computing devices (smart phones)
+    * 3.3 interactive image segmentation (intelligent scissors)
+ongoing challenges
+    * 3.5 integration of simulation models (interactive skeleton) of bij deze hierboven?)
+    * 3.6 mapping and reformations
+    * 3.4 topological methods
