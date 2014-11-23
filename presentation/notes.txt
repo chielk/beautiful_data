@@ -1,0 +1,188 @@
+### 1. introduction
+
+Lots of data since the 70s because:
+* MRI (magnetic resonance imaging)
+* CT (computed tomography)
+
+Applications:
+* diagnosis (colonoscopy)
+* treatment (surgical planning)
+* medical research (visualization of tensor imaging data)
+
+Established in 80s
+
+Now: able to acquire much more complex data:
+* HARDI (high angular resolution diffision imaging) -> indirect structure in brain
+* fMRI -> time based correlation of neural activity
+
+Also now, attempting to answer much more sophisticated questions
+
+### 2. 30 year overview of medical visualization
+## 2.1 practical and multi-modal visualization
+
+1978, CT and 3D rendering for curgery planning
+raycasting (1979) and marching cubes quickly followed making visualization good bussines
+
+1988, combine CT and MRI in multi-modal volume rendering (using more models)
+
+## 2.2 therapy planning, predictive simulation and diagnosis
+In the 1990's
+earliest case of predictive or ourcome simulation integrated visualization with
+surgical planning (predict outcome of some surgery based on CT data)
+
+visual coloscopy (diagnosis) possible with efficient rendering and interaction
+
+## 2.3 multi field data
+* 1994, DTI (difussion tensor imaging), is MRI based. ->
+able to capture presence and orientation of fiber bundles or muscle fibers
+
+First to examples of natively multi-field medical data (multiple parameters over
+the same spatio temporal domain)
+
+Raised questions: how to best visually represent and interact with such data
+visual analysis inspired solution based on linked physical and feature space
+viewers
+
+## 2.4 time varying data
+1996
+Dynamic contrast enhanced MRI (DCE-MRI)
+studo the brain over time by taking several MRI scans with months of interval
+methods included animation
+
+
+## 2.5 illustrative visualization
+create renditions that consider perceptual capablitities of humans. For example
+more depth cues than only shading (for example outlining).
+Computer graphics term: Non-photorealistic rendering (NPR).
+Landmarks:
+* boundary enhancement based on gradient approximation (2000)
+* curvature based transfer functions
+
+## 2.6 multi-subject data
+extract patterns that affect a part of a whole collection (for example to which
+aspects of data correlate with disease outcome?).
+* example: lifelines2
+Mixed measurements include imaging, genetics, blood measurements
+Mostly interactive
+
+### 3. challenges in medical visualization
+
+## 3.1 advances in data acquisition
+320 slice CT scanner (320 slices per second!) can capture the heart beating
+
+HARDI and DSI datasets contain hunderds of diffussion weighted volumes which
+describe the orientation. Is becoming more relevant.
+Require new visual metaphors to copy with this higly multi-variate data
+
+bioluminescence (BLI) and fluorecence (FLI): molecular imaging that enable in
+vivo imaging of gene expressions. Datasets vary greatly in scale, sensitivity
+and spatio-temporal embedding. Now small animals, future, more humans
+
+More and more large scale 3d microscopical data (43 gigabyte electronic
+microscopy volume dataset on the hippocampus)
+
+advances are continues and demands are accelerating
+
+## 3.2 heterogeneous display and computing devices
+mobile phones
+* familiar
+* increating computational power
+* avalaible at bedside
+
+## 3.3 interactive image segmentation
+image segmentation is very importatnt but impractical because differing image
+acquisition pathology and anatomy. User interaction required
+
+Well known interactive segmentation technique: live-wire or intelligent sciccors
+
+often combines with elements of image analysis
+
+## 3.4 topological methods
+topological data representation can be used to segment bones and organs to
+identify their spatial relationships consistently
+
+apply on 3d data with contour trees to systematically associate anatomical
+structure captures as topological skeletons of isosurfaces
+
+Now topological methods are developed for visualizing multi variate and high
+dimensional data sets. Potential useful for
+* tensor fields obtain through DT-MRI
+* multi-subject data in group fMRI studies
+* timy-varying data measured by high speed CTs
+
+## 3.5 integration of simulation models
+simulation to predict outcome
+* interactive skeleton range motion
+* biomechanical stress
+* simulation models for implant planning in orthopedics
+* nasial airflow simulation
+
+problems:
+* dynamical and complex simulation data requires new visualization techniques
+* uncertainty (of simulation) should be explored
+
+## 3.6 mappings and reformations
+standardized mapping of higher dimension to lower dimension:
+* greatly facilitates interpretation of data
+* enables study with minimum interaction
+
+(other) examples:
+* brain flatting
+* colon unfolding
+
+## 3.7 illustrative visalization in medicine
+no longer perfomance constraints
+
+Recent examples
+* simulation of crepuscular rays of tumor accessibility planning
+* multi-modal illustrative volume rendering for neurosurgical tumor treatment
+
+illustration representations can intelligently simplify visual representation
+whilst transferring as much information as possible.
+
+example:
+* visualization of nasal air flow simulation, boundary enhancement (as
+illustrative technique) to convey simulation flow and the anatomy
+simultaneously)
+
+## 3.8 hyper-realism
+also no longer perfomance issues
+interactive physical-based lightning rendering
+
+enables:
+* photo-realism
+* hyper-realism in art
+* additional realistic detail to convey information better (there are
+indications that this is possible, should be explored)
+
+## 3.9 visual analysis in healthcare
+repeat of various previous chapters?
+
+## 3.10 population imaging
+thousands of patients scanned often for years
+
+try to find hypothesis and stuff by examining data (not beforehand)
+
+visualization can be applied here
+
+### 4 conclusions
+* overview of the past 30 years
+* identified (and discussed) problems for the coming decade
+* short time on one static dataset, more time for:
+    * change over time
+    * integration of anatomy with simulation
+    * cohort studies
+* Medvis2.0 problem: problems where such time-dependent and high-dimensional
+data are used
+* classic problems are `solved`
+* medvis2.0 problems are harder to analyze
+* integrated analysis and visualization is key to solve medvis2.0 problems
+* require more medical background knowledge to solve this stuff
+
+
+
+
+
+
+
+
