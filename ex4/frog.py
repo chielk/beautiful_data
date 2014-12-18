@@ -161,22 +161,22 @@ if __name__ == "__main__":
     frog_actor.GetProperty().SetColor(0.5, 0.5, 0)
     frog_actor.GetProperty().SetOpacity(0.3)
 
-    volume_property2 = vtk.vtkVolumeProperty()
-    volume_property2.SetColor(ORGAN_FN)
-    volume_property2.SetScalarOpacity(alpha_fn(mouseButton.get_deactivated()))
-    mouseButton.set_property(volume_property2)
+    volume_property = vtk.vtkVolumeProperty()
+    volume_property.SetColor(ORGAN_FN)
+    volume_property.SetScalarOpacity(alpha_fn(mouseButton.get_deactivated()))
+    mouseButton.set_property(volume_property)
 
     render_function = vtk.vtkVolumeRayCastCompositeFunction()
-    volume_mapper2 = vtk.vtkVolumeRayCastMapper()
-    volume_mapper2.SetVolumeRayCastFunction(render_function)
-    volume_mapper2.SetInputConnection(frog_tissue.GetOutputPort())
+    volume_mapper = vtk.vtkVolumeRayCastMapper()
+    volume_mapper.SetVolumeRayCastFunction(render_function)
+    volume_mapper.SetInputConnection(frog_tissue.GetOutputPort())
 
-    volume2 = vtk.vtkVolume()
-    volume2.SetMapper(volume_mapper2)
-    volume2.SetProperty(volume_property2)
+    volume = vtk.vtkVolume()
+    volume.SetMapper(volume_mapper)
+    volume.SetProperty(volume_property)
 
     renderer.AddActor(frog_actor)
-    renderer.AddActor(volume2)
+    renderer.AddActor(volume)
     renderer.SetBackground(0.1, 0.1, 0.1)
     render_window.SetSize(500, 500)
 
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     render_interactor.SetRenderWindow(render_window)
 
     def exit_check(obj, event):
-        if obj.GetEventPending() != 0:
+        if obj.GetEventPending():
             obj.SetAbortRender(1)
 
     render_window.AddObserver("AbortCheckEvent", exit_check)
