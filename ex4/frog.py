@@ -13,6 +13,7 @@ class LeftMouseButton(vtk.vtkInteractorStyleTrackballCamera):
         self.legend_list = legend_list
         self.last_x = -1
         self.last_y = -1
+        self.deactivated = []
 
     def leftButtonPressedEvent(self, obj, event):
         self.last_x, self.last_y = self.interactor.GetEventPosition()
@@ -28,9 +29,20 @@ class LeftMouseButton(vtk.vtkInteractorStyleTrackballCamera):
         for i, (x1, y1, x2, y2) in enumerate(self.legend_list):
             if x > x1 and x < x2 and y < y1 and y > y2:
                 print 'clikced legend item', i
+                if i in self.deactivated:
+                    self.deactivated.remove(i)
+                else:
+                    self.deactivated.append(i)
+                self.property.SetScalarOpacity(alpha_fn(self.deactivated))
                 break
 
         self.OnLeftButtonUp()
+
+    def get_deactivated(self):
+        return self.deactivated
+
+    def set_property(self, property):
+        self.property = property
 
 def rgb_fn(zipped_data):
     fn = vtk.vtkColorTransferFunction()
@@ -42,26 +54,16 @@ def rgb_fn(zipped_data):
     return fn
 
 
-def alpha_fn(data):
+def alpha_fn(deactivated):
+    print deactivated
     fn = vtk.vtkPiecewiseFunction()
-    for point in data:
-        fn.AddPoint(*point)
+    fn.AddPoint(0, 0)
+    for i in range(1, 16):
+        fn.AddPoint(i, 0.0 if i in deactivated else 0.3)
+    fn.AddPoint(16, 0)
     return fn
 
 
-ALPHA = [(0, 0.),
-         (1., 0.335),
-         (1.95445, 0.316667),
-         (3.9, 0.316667),
-         (4., 0.27),
-         (4.1, 0.335),
-         (11.2686, 0.335),
-         (12.9, 0.335),
-         (13.1061, 0.051667),
-         (14.0565, 0.39),
-         (15, 0.42)]
-
-ORGAN_OPACITY = alpha_fn(ALPHA)
 
 ORGAN_INFO = [(1, (1., 0., 0.), "Blood"),
               (2, (0.309804, 0.435294, 1.000000), "Brain"),
@@ -141,7 +143,13 @@ if __name__ == "__main__":
     PATTERN = "data/frog.%03d.raw"
     TISSUE_PATTERN = "data/frogTissue.%03d.raw"
 
+
+    renderer = vtk.vtkOpenGLRenderer()
+    render_window = vtk.vtkRenderWindow()
+    render_window.AddRenderer(renderer)
+    render_interactor = vtk.vtkRenderWindowInteractor()
     legend_actor, legend_list = make_legend(ORGAN_COLORS)
+    mouseButton = LeftMouseButton(render_interactor, legend_list)
 
     frog = read_data(PATTERN, SPACING, EXTENT)
     frog_tissue = read_data(TISSUE_PATTERN, SPACING, EXTENT)
@@ -162,7 +170,8 @@ if __name__ == "__main__":
 
     volume_property2 = vtk.vtkVolumeProperty()
     volume_property2.SetColor(ORGAN_FN)
-    volume_property2.SetScalarOpacity(ORGAN_OPACITY)
+    volume_property2.SetScalarOpacity(alpha_fn(mouseButton.get_deactivated()))
+    mouseButton.set_property(volume_property2)
 
     render_function = vtk.vtkVolumeRayCastCompositeFunction()
     volume_mapper2 = vtk.vtkVolumeRayCastMapper()
@@ -173,17 +182,12 @@ if __name__ == "__main__":
     volume2.SetMapper(volume_mapper2)
     volume2.SetProperty(volume_property2)
 
-    renderer = vtk.vtkOpenGLRenderer()
-    render_window = vtk.vtkRenderWindow()
-
     renderer.AddActor(frog_actor)
     renderer.AddActor(volume2)
     renderer.SetBackground(0.32157, 0.34118, 0.43137)
     render_window.SetSize(500, 500)
 
-    render_window.AddRenderer(renderer)
-    render_interactor = vtk.vtkRenderWindowInteractor()
-    render_interactor.SetInteractorStyle(LeftMouseButton(render_interactor, legend_list))
+    render_interactor.SetInteractorStyle(mouseButton)
     render_interactor.SetRenderWindow(render_window)
 
 
