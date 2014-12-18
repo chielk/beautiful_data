@@ -28,7 +28,6 @@ class LeftMouseButton(vtk.vtkInteractorStyleTrackballCamera):
 
         for i, (x1, y1, x2, y2) in enumerate(self.legend_list):
             if x > x1 and x < x2 and y < y1 and y > y2:
-                print 'clikced legend item', i
                 if i in self.deactivated:
                     self.deactivated.remove(i)
                 else:
@@ -55,11 +54,10 @@ def rgb_fn(zipped_data):
 
 
 def alpha_fn(deactivated):
-    print deactivated
     fn = vtk.vtkPiecewiseFunction()
     fn.AddPoint(0, 0)
     for i in range(1, 16):
-        fn.AddPoint(i, 0.0 if i in deactivated else 0.3)
+        fn.AddPoint(i, 0.0 if i - 1 in deactivated else 0.3)
     fn.AddPoint(16, 0)
     return fn
 
