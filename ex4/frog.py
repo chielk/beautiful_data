@@ -3,7 +3,7 @@ import vtk
 
 
 class LeftMouseButton(vtk.vtkInteractorStyleTrackballCamera):
-    """ works with a list of entries to see if the user clicks on a legend item.
+    """Works with a list of entries to see if the user clicks on a legend item.
     """
 
     def __init__(self, interactor, legend_list):
@@ -43,6 +43,7 @@ class LeftMouseButton(vtk.vtkInteractorStyleTrackballCamera):
     def set_property(self, property):
         self.property = property
 
+
 def rgb_fn(zipped_data):
     fn = vtk.vtkColorTransferFunction()
     for point, color in zipped_data:
@@ -62,25 +63,25 @@ def alpha_fn(deactivated):
     return fn
 
 
-
 ORGAN_INFO = [(1, (1., 0., 0.), "Blood"),
-              (2, (0.309804, 0.435294, 1.000000), "Brain"),
-              (3, (0.6, 0.5, 0.2), "Duodenum"),
-              (4, (0.333333, 0.501961, 0.000000), "Eye retina"),
-              (5, (0.721569, 0.886275, 0.400000), "Eye white"),
-              (6, (0.831373, 0.207843, 0.560784), "Heart"),
-              (7, (0.913725, 0.686275, 0.227451), "Ileum"),
-              (8, (0.831373, 0.372549, 0.631373), "Kidney"),
-              (9, (1., 1., 0.5), "Large intestine"),
-              (10, (0.913725, 0.745098, 0.411765), "Liver"),
-              (11, (0.431373, 0.000000, 0.243137), "Lung"),
-              (12, (0.309804, 1.000000, 1.000000), "Nerve"),
-              (13, (1., 1., 1.), "Skeleton"),
-              (15, (0.537255, 0.356863, 0.000000), "Stomach")]
+              (2, (.3, .4, 1.), "Brain"),
+              (3, (.6, .5, .2), "Duodenum"),
+              (4, (.9, .9, .9), "Eye white"),
+              (5, (.2, .7, .3), "Retina"),
+              (6, (1., .2, .4), "Heart"),
+              (7, (.9, .6, .2), "Ileum"),
+              (8, (.8, .4, .6), "Kidney"),
+              (9, (1., 1., .5), "Large intestine"),
+              (10, (.9, .7, .4), "Liver"),
+              (11, (.4, .5, .3), "Lungs"),
+              (12, (.3, 1., 1.), "Nerve"),
+              (13, (.8, .8, .8), "Skeleton"),
+              (14, (0., 1., .3), "Spleen"),
+              (15, (.5, .35, 0.), "Stomach")]
 
 ORGAN_FN = rgb_fn(zip(*zip(*ORGAN_INFO)[:-1]))
 ORGAN_COLORS = zip(*zip(*ORGAN_INFO)[1:])
-LEGEND_WIDTH = 150
+LEGEND_WIDTH = 200
 LEGEND_HEIGHT = 300
 
 
@@ -99,11 +100,8 @@ def read_data(filepattern, data_spacing, data_extent):
     data_reader.SetWholeExtent(*data_extent)
     return data_reader
 
+
 def make_legend(entries):
-    """ accept a list of tuples of format: [ ( (r, g, b), name), ... ]
-    returns a tuple on the first index the actor that is the legend actor, and
-    on the second index a tuple with top left coordinate and bottom right
-    coordinate """
     legend = vtk.vtkLegendBoxActor()
     legend.SetNumberOfEntries(len(entries))
 
@@ -119,9 +117,8 @@ def make_legend(entries):
     legend.GetPosition2Coordinate().SetValue(LEGEND_WIDTH, LEGEND_HEIGHT)
     return legend, make_legend_locations(entries)
 
-def make_legend_locations(entries):
-    """accept a list of tuples of format: [((r, g, b), name), ...]"""
 
+def make_legend_locations(entries):
     legend_box_height = LEGEND_HEIGHT / float(len(entries))
 
     legend_boxes = []
@@ -130,9 +127,8 @@ def make_legend_locations(entries):
         y1 = LEGEND_HEIGHT - (i * legend_box_height)
         x2 = LEGEND_WIDTH
         y2 = y1 - legend_box_height
-        legend_boxes.append( (x1, y1, x2, y2))
+        legend_boxes.append((x1, y1, x2, y2))
     return legend_boxes
-
 
 
 if __name__ == "__main__":
@@ -140,7 +136,6 @@ if __name__ == "__main__":
     EXTENT = (0, 499, 0, 469, 1, 136)
     PATTERN = "data/frog.%03d.raw"
     TISSUE_PATTERN = "data/frogTissue.%03d.raw"
-
 
     renderer = vtk.vtkOpenGLRenderer()
     render_window = vtk.vtkRenderWindow()
@@ -163,7 +158,7 @@ if __name__ == "__main__":
 
     frog_actor = vtk.vtkOpenGLActor()
     frog_actor.SetMapper(frog_geometry)
-    frog_actor.GetProperty().SetColor(0.333, 0.333, 0)
+    frog_actor.GetProperty().SetColor(0.5, 0.5, 0)
     frog_actor.GetProperty().SetOpacity(0.3)
 
     volume_property2 = vtk.vtkVolumeProperty()
@@ -182,13 +177,11 @@ if __name__ == "__main__":
 
     renderer.AddActor(frog_actor)
     renderer.AddActor(volume2)
-    renderer.SetBackground(0.32157, 0.34118, 0.43137)
+    renderer.SetBackground(0.1, 0.1, 0.1)
     render_window.SetSize(500, 500)
 
     render_interactor.SetInteractorStyle(mouseButton)
     render_interactor.SetRenderWindow(render_window)
-
-
 
     def exit_check(obj, event):
         if obj.GetEventPending() != 0:
