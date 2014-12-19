@@ -26,13 +26,22 @@ def make_stream_actor(position, color):
     stream_tube.SetRadius(.2)
     stream_tube.SetNumberOfSides(12)
 
-    stream_mapper = vtk.vtkPolyDataMapper()
-    stream_mapper.SetInputConnection(stream_tube.GetOutputPort())
+    stream_mapper1 = vtk.vtkPolyDataMapper()
+    stream_mapper1.SetInputConnection(stream_tube.GetOutputPort())
+    stream_mapper1.ScalarVisibilityOff()
 
-    stream_actor = vtk.vtkActor()
-    stream_actor.GetProperty().SetColor(*color)
-    stream_actor.SetMapper(stream_mapper)
-    return stream_actor
+    stream_mapper2 = vtk.vtkPolyDataMapper()
+    stream_mapper2.SetInputConnection(stream_tube.GetOutputPort())
+
+    stream_actor1 = vtk.vtkActor()
+    stream_actor1.GetProperty().SetColor(*color)
+    stream_actor1.SetMapper(stream_mapper1)
+    stream_actor1.GetProperty().SetOpacity(0.4)
+
+    stream_actor2 = vtk.vtkActor()
+    stream_actor2.SetMapper(stream_mapper2)
+    stream_actor2.GetProperty().SetOpacity(1.)
+    return [stream_actor1, stream_actor2]
 
 if __name__ == '__main__':
     mixer = read_data()
@@ -42,12 +51,8 @@ if __name__ == '__main__':
     mixer_contour.ComputeNormalsOn()
     mixer_contour.SetValue(0, 7)
 
-    # Yellow
-    yellow_stream_actor = make_stream_actor((0, 15, 30), (1, 1, 0))
-
-    # Blue
-    blue_stream_actor = make_stream_actor((0, 45, 30), (0, 0, 1))
-    blue_stream_actor.GetProperty().SetOpacity(0.15)
+    stream_actors = make_stream_actor((0, 15, 30), (0, 1, 0))
+    stream_actors += make_stream_actor((0, 45, 30), (0, 0, 1))
 
     mixer_geometry = vtk.vtkPolyDataMapper()
     mixer_geometry.SetInputConnection(mixer_contour.GetOutputPort())
@@ -55,8 +60,8 @@ if __name__ == '__main__':
 
     mixer_actor = vtk.vtkOpenGLActor()
     mixer_actor.SetMapper(mixer_geometry)
-    mixer_actor.GetProperty().SetColor(0.7, 0.7, 0.7)
-    mixer_actor.GetProperty().SetOpacity(0.3)
+    mixer_actor.GetProperty().SetColor(.5, .5, .5)
+    mixer_actor.GetProperty().SetOpacity(1.)
 
     # Standard vtk environment stuff
     renderer = vtk.vtkOpenGLRenderer()
@@ -65,9 +70,10 @@ if __name__ == '__main__':
     render_interactor = vtk.vtkRenderWindowInteractor()
 
     renderer.AddActor(mixer_actor)
-    renderer.AddActor(yellow_stream_actor)
-    renderer.AddActor(blue_stream_actor)
+    for actor in stream_actors:
+        renderer.AddActor(actor)
     renderer.SetBackground(0.1, 0.1, 0.1)
+    #renderer.SetBackground(0, 0, 0)
     render_window.SetSize(500, 500)
 
     render_interactor.SetRenderWindow(render_window)
