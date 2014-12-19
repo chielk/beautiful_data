@@ -7,7 +7,11 @@ def read_data():
     reader.Update()
     return reader
 
-def make_stream_actor(position, color):
+
+def make_stream_actors(position, color):
+    """Create a stream and use two mappers. One to represent velocity with
+    the default colour, and the other to change the colour.
+    """
     seed = vtk.vtkPointSource()
     seed.SetRadius(15)
     seed.SetNumberOfPoints(100)
@@ -26,17 +30,19 @@ def make_stream_actor(position, color):
     stream_tube.SetRadius(.2)
     stream_tube.SetNumberOfSides(12)
 
+    # Solid transparent colour
     stream_mapper1 = vtk.vtkPolyDataMapper()
     stream_mapper1.SetInputConnection(stream_tube.GetOutputPort())
     stream_mapper1.ScalarVisibilityOff()
-
-    stream_mapper2 = vtk.vtkPolyDataMapper()
-    stream_mapper2.SetInputConnection(stream_tube.GetOutputPort())
 
     stream_actor1 = vtk.vtkActor()
     stream_actor1.GetProperty().SetColor(*color)
     stream_actor1.SetMapper(stream_mapper1)
     stream_actor1.GetProperty().SetOpacity(0.4)
+
+    # opaque velocity colour
+    stream_mapper2 = vtk.vtkPolyDataMapper()
+    stream_mapper2.SetInputConnection(stream_tube.GetOutputPort())
 
     stream_actor2 = vtk.vtkActor()
     stream_actor2.SetMapper(stream_mapper2)
@@ -49,10 +55,10 @@ if __name__ == '__main__':
     mixer_contour = vtk.vtkMarchingCubes()
     mixer_contour.SetInputConnection(mixer.GetOutputPort())
     mixer_contour.ComputeNormalsOn()
-    mixer_contour.SetValue(0, 7)
+    mixer_contour.SetValue(0, 1)
 
-    stream_actors = make_stream_actor((0, 15, 30), (0, 1, 0))
-    stream_actors += make_stream_actor((0, 45, 30), (0, 0, 1))
+    stream_actors = make_stream_actors((0, 15, 30), (0, 1, 0))
+    stream_actors += make_stream_actors((0, 45, 30), (0, 0, 1))
 
     mixer_geometry = vtk.vtkPolyDataMapper()
     mixer_geometry.SetInputConnection(mixer_contour.GetOutputPort())
@@ -73,7 +79,6 @@ if __name__ == '__main__':
     for actor in stream_actors:
         renderer.AddActor(actor)
     renderer.SetBackground(0.1, 0.1, 0.1)
-    #renderer.SetBackground(0, 0, 0)
     render_window.SetSize(500, 500)
 
     render_interactor.SetRenderWindow(render_window)
