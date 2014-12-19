@@ -28,15 +28,20 @@ We read the data using a \emph{vtkGenericDataObjectReader}. We used the
 \emph{vtkMarchingCubes} algorithm to create a 3D volume of the mixer from the
 scalars in the dataset.
 
-To simulate flow we used a \emph{vtkStreamTracer} to propagate particles through
-the mixers velocity field with the \emph{vtkRungeKutta45} algorithm. A
-\emph{vtkPointSource} was used to specify the initial locations of the particles.
-The path of the particles were transformed to tube using the \emph{vtkTubeFilter}
-class.
+To simulate flow we used a \emph{vtkStreamTracer} with the
+\emph{vtkRungeKutta45} algorithm to propagate particles through the mixers
+velocity field with. A \emph{vtkPointSource} was used to specify the initial
+locations of the particles. The path of the particles were transformed to tube
+using the \emph{vtkTubeFilter} class.
 
 Finally a \emph{vtkPolyDataMapper} was used to set the color the tubes. The
 color is used both to indicate what source (i.e. which fluid) a tube belongs to,
 and what speed a particle has at a certain point in the trajectory of its path.
+
+The mixer can be rendered transparently so that all tubes in the process can be seen,
+or it can be rendered completely opaque. In any other case the mixer is partly
+see-through and this distorts the colors of the tubes. This is undesirable
+because the colors convey important information about the flow.
 
 \section{Simulation}
 We simulated two fluids using the aforementioned method. Fluid A has a color of
@@ -51,15 +56,15 @@ the fluids flow faster.
 
 \section{Discussion}
 From figure \ref{fig:1} we can learn that the fluids do not mix well and that
-the velocity does not change radically through the simulation.
+the velocity does not change radically through the simulation. Different
+starting points might have a different result but we have no indication of where
+fluids are inserted into the mixer.
 
-
-%\begin{figure}[h]
-%    \includegraphics[width=\textwidth]{}
-%    \caption{Visualization}
-%    \label{fig:1}
-%\end{figure}
-
+\begin{figure}[h]
+    \includegraphics[width=\textwidth]{purple_yellow}
+    \caption{Visualization}
+    \label{fig:1}
+\end{figure}
 
 
 \end{document}
